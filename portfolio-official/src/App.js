@@ -10,27 +10,30 @@ import {ReactComponent as Python} from '../src/assets/python.svg';
 import {ReactComponent as Mysql} from '../src/assets/mysql.svg';
 import {ReactComponent as React_} from '../src/assets/react.svg';
 import {ReactComponent as Kotlin} from '../src/assets/kotlin.svg';
+import {ReactComponent as LinkedIn} from '../src/assets/linkedin.svg';
 
 function App() {
-    const divRef = useRef(null);
     const skillDivRef = useRef(null);
+    const projectDivRef = useRef(null);
+    const contactsHolderRef = useRef(null);
+
     const USERNAME = 'Satwik-Kar'
     const [DATA, setData] = useState(null);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    divRef.current.classList.add('show');
+            (entries) => {
+                entries.forEach(entry => {
+
+                    if (entry.isIntersecting) {
+
+                        entry.target.classList.add('show')
+                    } else {
+                        entry.target.classList.remove('show');
+                    }
+                })
 
 
-                    console.log("intersecting", entry);
-                } else {
-
-                    divRef.current.classList.remove('show');
-
-                    console.log("not intersecting", entry);
-                }
             },
             {
                 root: null, // Use the viewport as the container
@@ -39,13 +42,19 @@ function App() {
             }
         );
 
-        if (divRef.current) {
-            observer.observe(divRef.current);
+        if (skillDivRef.current) {
+            observer.observe(skillDivRef.current);
+        }
+        if (projectDivRef.current) {
+            observer.observe(projectDivRef.current);
         }
 
         return () => {
-            if (divRef.current) {
-                observer.unobserve(divRef.current);
+            if (skillDivRef.current) {
+                observer.unobserve(skillDivRef.current);
+            }
+            if (projectDivRef.current) {
+                observer.unobserve(projectDivRef.current);
             }
         };
     }, []);
@@ -86,6 +95,18 @@ function App() {
 
         return date.toLocaleDateString('en-IN')
     }
+    const getInTouch = () => {
+        if (contactsHolderRef.current) {
+            contactsHolderRef.current.classList.add('blink')
+            setTimeout(() => {
+                contactsHolderRef.current.classList.remove('blink')
+
+            }, 3000);
+
+        }
+
+
+    }
 
     return (
         <div className="App">
@@ -123,17 +144,48 @@ function App() {
                                 <br/>
                                 <h3>Currently located in India 🇮🇳</h3><br/>
 
-                                <button type="button" className="btn btn-outline-success get-in-touch-btn">Get in touch
+                                <button onClick={getInTouch} type="button" className="btn btn-outline-success get-in-touch-btn">Get in touch
                                 </button>
+                                <br/><br/>
+
+                                <div className={'contacts_holder'} ref={contactsHolderRef}>
+
+
+                                    <a href={'mailto:satwik.k.2000@gmail.com'} target={'_blank'}>
+                                        <img src={require('../src/assets/gmail_icon.png')} className="contacts_img"
+                                             alt="contacts img"/>
+                                    </a>
+                                    <a href={'https://twitter.com/kar_satwik'} target={'_blank'}>
+                                        <img src={require('../src/assets/twitter_icon.png')} className="contacts_img"
+                                             alt="contacts img"/>
+                                    </a>
+                                    <a href={'https://www.linkedin.com/in/satwik-kar-2a1a5b277/'} target={'_blank'}>
+                                        <LinkedIn/>
+                                    </a>
+                                    <a href={'https://www.instagram.com/kar.satwik'} target={'_blank'}>
+                                        <img src={require('../src/assets/instagram.png')}
+                                             className="contacts_img"
+                                             alt="contacts img"/>
+                                    </a>
+                                    <a href={'https://github.com/Satwik-Kar'} target={'_blank'}>
+                                        <img src={require('../src/assets/github-mark-white.png')}
+                                             className="contacts_img"
+                                             alt="contacts img"/>
+                                    </a>
+
+                                </div>
                             </div>
+
                         </div>
                         <div className='intro-div-right'>
                             <img className='profile-img' src={require('../src/assets/profile.jpg')} alt="profile"/>
                         </div>
+
                     </div>
+
                 </div>
 
-                <div className='skill-div hidden' ref={divRef}>
+                <div className='skill-div hidden' ref={skillDivRef}>
                     <div className='skill-div-top'>
 
                         <h1><span style={{color: '#009152'}}>Skills</span> and Tools</h1><br/><br/>
@@ -239,28 +291,29 @@ function App() {
 
 
                 </div>
-                <div className={'projects-div'}>
-                    <h1>Project Works.</h1>
+                <div className={'projects-div hidden'} ref={projectDivRef}>
+                    <h1><span style={{color: '#009152'}}>Project</span> Works.</h1>
                     <div className={'projects-container'}>
 
                         {DATA?.map((item, index) => (
+                            <a style={{textDecoration: 'none'}} href={item.html_url} target={"_blank"}>
+                                <div className={'item'}>
 
-                            <div className={'item'}>
+                                    <h2>{item.name}</h2>
 
-                                <h2>{item.name}</h2>
+                                    <h5>{item.description}</h5>
+                                    <div style={{display: 'flex', flexDirection: 'row', gap: '20px'}}>
+                                        <div style={{display: 'flex', flexDirection: 'row', gap: '20px'}}>
+                                            <img width={20} height={20} src={require('../src/assets/code.png')}/>
+                                            <h6>{item.language ? item.language : 'N/A'}</h6>
+                                        </div>
+                                        <h6>last updated · {getDate(item.pushed_at)}</h6>
 
-                                <h5>{item.description}</h5>
-                                <div style={{display: 'flex', flexDirection:'row',gap:'20px'}}>
-                                    <div  style={{display: 'flex', flexDirection:'row',gap:'20px'}}>
-                                        <img width={20} height={20} src={require('../src/assets/code.png')}/>
-                                        <h6>{item.language ? item.language : 'N/A'}</h6>
                                     </div>
-                                    <h6>last updated · {getDate(item.pushed_at)}</h6>
+
 
                                 </div>
-
-
-                            </div>
+                            </a>
 
 
                         ))}

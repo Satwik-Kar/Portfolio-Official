@@ -139,12 +139,13 @@ function App() {
                         <div className='intro-div-left'>
                             <div className='intro-div-left-text-holder'>
                                 <h1>Hello,</h1>
-                                <h1> I am <span style={{color: 'lightgreen'}}>Satwik</span>,</h1>
-                                <h1>a Software Developer</h1>
+                                <h1> I am <span className={'gradient-text typewriter'}>Satwik,</span></h1>
+                                <h1>a Software <span className={'gradient-text typewriter'}>Developer</span></h1>
                                 <br/>
                                 <h3>Currently located in India 🇮🇳</h3><br/>
 
-                                <button onClick={getInTouch} type="button" className="btn btn-outline-success get-in-touch-btn">Get in touch
+                                <button onClick={getInTouch} type="button"
+                                        className="btn btn-outline-success get-in-touch-btn">Get in touch
                                 </button>
                                 <br/><br/>
 

@@ -62,7 +62,7 @@ function App() {
 
 
         const ACCESS_TOKEN = process.env.REACT_APP_GITHUB_ACCESS_TOKEN
-
+        console.log(ACCESS_TOKEN)
         const fetchRepositories = () => {
             const apiUrl = `https://api.github.com/users/${USERNAME}/repos`;
             fetch(apiUrl, {'Authorization': `token ${ACCESS_TOKEN}`,},).then(res => res.json()).then((data) => {
